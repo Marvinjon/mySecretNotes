@@ -27,22 +27,25 @@ NC='\033[0m' # No Color
 # Configuration Variables (easy to modify)
 ################################################################################
 
-# App directory - use argument if provided, otherwise use current directory
+# Get the script's directory and use parent directory as default APP_DIR
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+DEFAULT_APP_DIR="$(dirname "$SCRIPT_DIR")"
+
+# App directory - use argument if provided, otherwise use parent directory
 if [ -z "$1" ]; then
-    APP_DIR="$(pwd)"
-    echo -e "${YELLOW}No directory specified. Using current directory: $APP_DIR${NC}"
+    APP_DIR="$DEFAULT_APP_DIR"
+    echo -e "${YELLOW}No directory specified. Using project directory: $APP_DIR${NC}"
 else
     APP_DIR="$1"
+    # Convert to absolute path
+    APP_DIR="$(cd "$APP_DIR" && pwd)"
 fi
-
-# Convert to absolute path
-APP_DIR="$(cd "$APP_DIR" && pwd)"
 
 # Site configuration name
 SITE_NAME="mysecretnotesapp"
 
 # Apache configuration files
-APACHE_CONFIG_SOURCE="$APP_DIR/apache-config-example.conf"
+APACHE_CONFIG_SOURCE="$APP_DIR/apache/apache-config-example.conf"
 APACHE_CONFIG_DEST="/etc/apache2/sites-available/$SITE_NAME.conf"
 
 # Log files
@@ -90,7 +93,7 @@ check_app_directory() {
     fi
     
     if [ ! -f "$APACHE_CONFIG_SOURCE" ]; then
-        print_error "apache-config-example.conf not found in $APP_DIR"
+        print_error "apache-config-example.conf not found in $APP_DIR/apache/"
         exit 1
     fi
 }

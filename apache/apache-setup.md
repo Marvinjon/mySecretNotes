@@ -32,7 +32,7 @@ pip3 install flask
 1. Copy the configuration file to Apache's sites-available directory:
 ```bash
 cd /home/student/MySecretNotes
-sudo cp apache-config-example.conf /etc/apache2/sites-available/mysecretnotesapp.conf
+sudo cp apache/apache-config-example.conf /etc/apache2/sites-available/mysecretnotesapp.conf
 ```
 
 2. Enable the site:

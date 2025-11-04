@@ -98,7 +98,7 @@ sudo systemctl start apache2
 
 ```bash
 # Copy SSL configuration
-sudo cp apache-config-ssl-example.conf /etc/apache2/sites-available/mysecretnotesapp-ssl.conf
+sudo cp apache/apache-config-ssl-example.conf /etc/apache2/sites-available/mysecretnotesapp-ssl.conf
 
 # Edit the file to update paths if needed
 sudo nano /etc/apache2/sites-available/mysecretnotesapp-ssl.conf

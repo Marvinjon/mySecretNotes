@@ -110,11 +110,13 @@ parse_arguments() {
     
     # Set default app directory if not provided
     if [ -z "$APP_DIR" ]; then
-        APP_DIR="$(pwd)"
+        # Get the script's directory and use parent directory as default
+        SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+        APP_DIR="$(dirname "$SCRIPT_DIR")"
+    else
+        # Convert to absolute path
+        APP_DIR="$(cd "$APP_DIR" && pwd)"
     fi
-    
-    # Convert to absolute path
-    APP_DIR="$(cd "$APP_DIR" && pwd)"
     
     # Validate Let's Encrypt setup
     if [ "$USE_LETSENCRYPT" = true ] && [ -z "$DOMAIN" ]; then
@@ -208,7 +210,7 @@ setup_letsencrypt_certificate() {
 configure_apache_ssl() {
     print_step "Configuring Apache for SSL/TLS"
     
-    local CONFIG_SOURCE="$APP_DIR/apache-config-ssl-example.conf"
+    local CONFIG_SOURCE="$APP_DIR/apache/apache-config-ssl-example.conf"
     local CONFIG_DEST="/etc/apache2/sites-available/$SITE_NAME-ssl.conf"
     
     if [ ! -f "$CONFIG_SOURCE" ]; then
